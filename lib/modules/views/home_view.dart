@@ -54,9 +54,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: ChangeNotifierProvider(
-        create: (context) => getIt<HomeViewModel>(),
-        child: Consumer<HomeViewModel>(
+      body: Consumer<HomeViewModel>(
           builder: (context, notify, _) {
             return GridView.builder(
               controller: _controller,
@@ -68,10 +66,10 @@ class _HomeViewState extends State<HomeView> {
                 childAspectRatio: 0.75,
               ),
               itemCount:
-                  getIt<HomeViewModel>().images.length +
-                  (getIt<HomeViewModel>().loading ? 1 : 0),
+                  notify.images.length +
+                  (notify.loading ? 1 : 0),
               itemBuilder: (context, index) {
-                final images = getIt<HomeViewModel>().images;
+                final images = notify.images;
                 if (index >= images.length) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -83,13 +81,13 @@ class _HomeViewState extends State<HomeView> {
             );
           },
         ),
-      ),
     );
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    getIt<HomeViewModel>().clear();
     super.dispose();
   }
 }

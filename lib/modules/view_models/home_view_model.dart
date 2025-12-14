@@ -30,4 +30,11 @@ class HomeViewModel extends ChangeNotifier {
     loading = false;
     notifyListeners();
   }
+
+  void clear() {
+    images = [];
+    _page = 1;
+    loading = false;
+    hasMore = true;
+  }
 }
