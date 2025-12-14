@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pixa_project/injection.dart';
@@ -49,7 +48,6 @@ class _LoginViewState extends State<LoginView> {
         appBar: AppBar(title: Text('Login')),
         body: SingleChildScrollView(
           child: Column(
-            // shrinkWrap: true,
             children: [
               SizedBox(height: 70),
               //--------------------- Logo ---------------------//

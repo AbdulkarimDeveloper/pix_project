@@ -18,11 +18,6 @@ class DioInstance {
       ..options.receiveTimeout = Constants.durationRequest
       ..options.sendTimeout = Constants.durationRequest
       ..options.receiveDataWhenStatusError = true
-      // ..transformer = dio.DefaultTransformer(jsonDecodeCallback: (json) {
-      //   logger('hhhssss:${json.replaceAll('%5B%5D', '[]')}');
-      //   return json.replaceAll(
-      //       '%5B%5D', '[]'); // Replace encoded '[]' with plain '[]'
-      // })
       ..options.contentType = "application/json; charset=utf-8"
       ..interceptors.addAll([if (kDebugMode) DioInterceptorLogger()]);
   }

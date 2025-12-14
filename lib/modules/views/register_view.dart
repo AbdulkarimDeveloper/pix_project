@@ -5,14 +5,12 @@ import 'package:pixa_project/modules/components/general_button.dart';
 import 'package:pixa_project/modules/components/general_text_filed.dart';
 import 'package:pixa_project/modules/components/logo_widget.dart';
 import 'package:pixa_project/modules/models/user_model.dart';
-import 'package:pixa_project/modules/view_models/login_view_model.dart';
 import 'package:pixa_project/modules/view_models/register_view_model.dart';
 import 'package:pixa_project/utils/close_keyboard.dart';
 import 'package:pixa_project/utils/constants.dart';
 import 'package:pixa_project/utils/context_ext.dart';
 import 'package:pixa_project/utils/generate_ids.dart';
 import 'package:pixa_project/utils/router/router_generator.dart';
-import 'package:pixa_project/utils/router/routers.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});

@@ -18,10 +18,7 @@ class ApiService {
         )
         .timeout(Constants.durationRequest);
 
-    print('datadata: ${response.statusCode}');
     final data = PixData.fromJson(jsonDecode(response.data!));
-    print('datadata: ${data}');
-
     return data.hits;
   }
 }

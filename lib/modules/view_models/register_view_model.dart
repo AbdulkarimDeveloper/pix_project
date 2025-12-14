@@ -6,14 +6,11 @@ import 'package:pixa_project/utils/router/router_generator.dart';
 import 'package:pixa_project/utils/router/routers.dart';
 import 'package:toastification/toastification.dart';
 
-class RegisterViewModel {
+class RegisterViewModel extends ChangeNotifier {
   RegisterViewModel({required this.repository});
   RegisterRepositoryAbs repository;
 
-  Future<void> register(
-    UserModel model,
-    BuildContext context,
-  ) async {
+  Future<void> register(UserModel model, BuildContext context) async {
     final list = await repository.getAll();
 
     bool res = true;

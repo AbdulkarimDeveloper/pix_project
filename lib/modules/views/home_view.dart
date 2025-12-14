@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pixa_project/injection.dart';
-import 'package:pixa_project/modules/models/pix_data.dart';
 import 'package:pixa_project/modules/view_models/home_view_model.dart';
 import 'package:pixa_project/modules/views/card_image.dart';
 import 'package:pixa_project/utils/constants.dart';
 import 'package:pixa_project/utils/resources_path.dart';
 import 'package:pixa_project/utils/router/router_generator.dart';
 import 'package:pixa_project/utils/router/routers.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -16,40 +16,22 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final ScrollController _controller = ScrollController();
 
-  List<Hit> images = [];
-
-  int _page = 1;
-  bool _loading = false;
-  bool _hasMore = true;
-
   @override
   void initState() {
     super.initState();
-    _loadImages();
+    getIt<HomeViewModel>().loadImages();
 
     _controller.addListener(() {
+      bool loading = getIt<HomeViewModel>().loading;
+      bool hasMore = getIt<HomeViewModel>().hasMore;
+
       if (_controller.position.pixels >=
               _controller.position.maxScrollExtent - 200 &&
-          !_loading &&
-          _hasMore) {
-        _loadImages();
+          !loading &&
+          hasMore) {
+        getIt<HomeViewModel>().loadImages();
       }
     });
-  }
-
-  Future<void> _loadImages() async {
-    setState(() => _loading = true);
-
-    try {
-      final newImages = await getIt<HomeViewModel>().fetchImages(_page);
-      setState(() {
-        images.addAll(newImages);
-        _page++;
-        if (newImages.isEmpty) _hasMore = false;
-      });
-    } catch (_) {}
-
-    setState(() => _loading = false);
   }
 
   @override
@@ -72,25 +54,35 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: GridView.builder(
-        controller: _controller,
-        padding: const EdgeInsets.all(8),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          childAspectRatio: 0.75,
+      body: ChangeNotifierProvider(
+        create: (context) => getIt<HomeViewModel>(),
+        child: Consumer<HomeViewModel>(
+          builder: (context, notify, _) {
+            return GridView.builder(
+              controller: _controller,
+              padding: const EdgeInsets.all(8),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.75,
+              ),
+              itemCount:
+                  getIt<HomeViewModel>().images.length +
+                  (getIt<HomeViewModel>().loading ? 1 : 0),
+              itemBuilder: (context, index) {
+                final images = getIt<HomeViewModel>().images;
+                if (index >= images.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final image = images[index];
+
+                return CardImage(image: image);
+              },
+            );
+          },
         ),
-        itemCount: images.length + (_loading ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index >= images.length) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final image = images[index];
-
-          return CardImage(image: image);
-        },
       ),
     );
   }

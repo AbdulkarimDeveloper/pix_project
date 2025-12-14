@@ -26,7 +26,7 @@ class PixData {
   Map<String, dynamic> toJson() => {
     "total": total,
     "totalHits": totalHits,
-    "hits": hits.map((x) => x?.toJson()).toList(),
+    "hits": hits.map((x) => x.toJson()).toList(),
   };
 }
 
